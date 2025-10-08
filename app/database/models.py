@@ -99,7 +99,7 @@ class EventLog(Base):
     event_type = Column(String(64))
     target_type = Column(String(64))
     target_id = Column(UUID(as_uuid=True))
-    metadata = Column(JSONB)
+    metadata1 = Column(JSONB)
     created_at = Column(TIMESTAMP)
 
     user = relationship("User", back_populates="events")
