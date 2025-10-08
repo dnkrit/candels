@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# Virtual env
+venv/
+env/
+.venv/
+
+# IDE configs
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Env files (секреты и токены)
+.env
+.env.*
+*.env
+
+# DBeaver configs
+.dbeaver/
+
+# SQLite (если вдруг используешь)
+*.db
+*.sqlite3
+
+# Migrations (если вручную не хочешь отслеживать)
+migrations/
+
+# Jupyter (если используешь)
+.ipynb_checkpoints/
+
+# PyCharm coverage reports
+htmlcov/
+.coverage
+coverage.xml
+.cache
+nosetests.xml
+*.cover
+*.py,cover
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
