@@ -1,10 +1,12 @@
-import SQLAlchemy
+"""
+Session и Base инициализация для проекта Candels.
+Используется SQLAlchemy + PostgreSQL.
+"""
 
-Происходит подключение к БД
-Создается к сессии
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+from config import settings
 
-Вызывается файл и создаются КРУД - фунции ожидают навход данные
-
-Сессия закрыта
-
-
+engine = create_engine(settings.DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
