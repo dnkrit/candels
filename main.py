@@ -1,40 +1,47 @@
 """
-Candels Bot — главный модуль Telegram-бота.
-Запускает FSM, регистрирует хендлеры и подключает CRUD.
+Candels Bot — основной запуск бота Агневидцы.
+FSM + Главное меню.
+Обновлено: улучшено подключение FSM и маршрутов.
 """
 
 import asyncio
 from aiogram import Bot, Dispatcher
-from aiogram.types import Message
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.filters import CommandStart
+from aiogram.types import Message
+
 from config import settings
-from app.database import crud, session
+from app.handlers import registration, main_menu
+
+
+# === Инициализация ===
 
 bot = Bot(token=settings.BOT_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
+# Подключение маршрутов FSM и меню
+dp.include_router(registration.router)
+dp.include_router(main_menu.router)
 
-@dp.message(lambda m: m.text.lower() in ["start", "/start"])
+
+# === Стартовое сообщение ===
+@dp.message(CommandStart())
 async def start_cmd(message: Message):
-    """Приветственное сообщение"""
-    await message.answer("✨ Добро пожаловать в Candels — выбери свой ритуал или создай свечу!")
+    await message.answer(
+        "✨ Добро пожаловать в храм Candels!\n"
+        "Чтобы начать путешествие, введи /start или выбери пункт меню."
+    )
 
 
-@dp.message(lambda m: m.text.lower() == "мой профиль")
-async def show_profile(message: Message):
-    """Пример запроса к БД"""
-    db = session.SessionLocal()
-    user = crud.get_user_profile(db, user_id="test-user-id")  # пример вызова
-    if user:
-        await message.answer(f"👤 {user.name}, ваш знак — {user.zodiac_west}")
-    else:
-        await message.answer("Профиль не найден.")
-    db.close()
-
-
+# === Основная точка входа ===
 async def main():
     print("🚀 Candels bot is running...")
-    await dp.start_polling(bot)
+    try:
+        await dp.start_polling(bot, close_bot_session=True)
+    except Exception as e:
+        print(f"❌ Ошибка запуска Candels Bot: {e}")
+    finally:
+        print("🕯 Candels Bot остановлен.")
 
 
 if __name__ == "__main__":
